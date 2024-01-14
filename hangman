@@ -1,0 +1,140 @@
+import java.util.*;
+public class MyProgram
+{
+    public static String hiddenWord = generateWord();
+    public static String found = "";
+    public static ArrayList<String> pastGuesses = new ArrayList<String>();
+    
+    public static void main(String[] args)
+    {
+        // making the amount of underscores needed
+        for(int i = 0; i < hiddenWord.length(); i++)
+        {
+            found += "_";
+        }
+        
+        // setting a variable to keep track of guesses
+        int guesses = 0;
+        
+        
+        while(true)
+        {
+            // printing the hang man
+            printImage(guesses);
+            
+            // printing the list of underscores/letters found
+            System.out.println(found);
+            
+            // printing out past guesses
+            System.out.print("Past guesses:");
+            System.out.println(pastGuesses);
+            
+            // adding 0 or 1 depending on if the user finds a letter
+            guesses += guessing();
+            
+            // if the user has used up all of their guesses
+            if(guesses == 12)
+            {
+                System.out.println("Sorry, you've lost. The hidden word is "+hiddenWord);
+                break;
+            }
+            
+            // if the user has found the hidden word
+            if(found.equals(hiddenWord))
+            {
+                System.out.println("Congratulations! You've won. The hidden word is "+hiddenWord);
+                break;
+            }
+        }
+    }
+    
+    // Function for user to enter a guess
+    public static int guessing()
+    {
+        Scanner input = new Scanner(System.in);
+        System.out.println("Please enter your guess");
+        String guess = input.nextLine();
+        pastGuesses.add(guess);
+        if (guess.length()>1)
+        {
+            boolean equal = guess.equals(hiddenWord);
+            if (equal)
+            {
+                System.out.println("Congratulations! You have guessed the hidden word.");
+                found = hiddenWord;
+                return 0;
+            }
+            else
+            {
+                System.out.println(guess +" is not in the hidden word.");
+                return 1;
+            }
+        }
+        if (hiddenWord.indexOf(guess)>=0)
+        {
+            System.out.println("Congratulations! " + guess +" is in the hidden word.");
+            for (int i = 0; i < hiddenWord.length(); i++)
+            {
+                if(hiddenWord.substring(i,i+1).equals(guess))
+                {
+                    String temp1 = found.substring(0,i);
+                    String temp2 = found.substring(i+1);
+                    found = temp1 + guess + temp2;
+                }
+            }
+            return 0;
+        }
+        else
+        {
+            System.out.println(guess +" is not in the hidden word.");
+            return 1;
+        }
+    }
+    
+    // Function to generate a random word
+    public static String generateWord()
+    {
+        String[] words = {"canadian","company","government","community","basketball","library","apartment","university"};
+        int rand = (int)(Math.random() * 8) + 1;
+        return words[rand];
+    }
+    
+    // Function to print the "hangman"
+    public static void printImage(int num)
+    {
+        String a1 = "o1";
+        String a2 = "o2";
+        String a3 = "|3";
+        String a4 = "|4";
+        String a5 = "o5";
+        String a6 = "o6";
+        String a7 = "-7";
+        String a8 = "-8";
+        String a9 = "-9";
+        String a10 = "-10";
+        String a11 = "|11";
+        String a12 = "012";
+        
+        String[] list = {a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12};
+        
+        
+        for (int i = 0; i < list.length; i++)
+        {
+            int number = Integer.parseInt(list[i].substring(1));
+            if(num >= number)
+            {
+                list[i] = " ";
+            }
+            list[i] = list[i].substring(0,1);
+        }
+        
+        System.out.println("     ______");
+        System.out.println("     |    |");
+        System.out.println("     "+list[11]+"    |");
+        System.out.println("  "+list[4]+list[6]+list[8]+list[10]+list[9]+list[7]+list[5]+" |");
+        System.out.println("    "+list[2]+" "+list[3]+"   |");
+        System.out.println("   "+list[0]+"   "+list[1]+"  |");
+        System.out.println("          |");
+        
+    }
+}
