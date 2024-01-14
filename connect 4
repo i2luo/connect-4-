@@ -1,0 +1,238 @@
+import java.util.*;
+
+public class MyProgram
+{
+    // Creating 2D array as inital board
+    public static String[][] board = {{"-","-","-","-","-","-","-"},{"-","-","-","-","-","-","-"},{"-","-","-","-","-","-","-"},{"-","-","-","-","-","-","-"},{"-","-","-","-","-","-","-"},{"-","-","-","-","-","-","-"}};
+    
+    public static void main(String[] args)
+    {
+        // Playing game alternating turns between user 1 and 2 until there's a winner
+        print_board();
+        while (true)
+        {
+            user1_turn();
+            print_board();
+            if (check_win())
+            {
+                System.out.println("User 1 wins!");
+                break;
+            }
+            user2_turn();
+            print_board();
+            if (check_win())
+            {
+                System.out.println("User 2 wins!");
+                break;
+            }
+        }
+    }
+    
+// Function for printing board
+    public static void print_board()
+    {
+        for (int i = 0; i < 6; i++)
+        {
+            for (int j = 0; j < 7; j++)
+            {
+                System.out.print(board[i][j]+" ");
+            }
+            System.out.println("");
+        }
+    }
+    
+    public static void place_chip(int column, int user)
+    {
+        for (int i = 5; i>-1; i--)
+        {
+            if (board[i][column].equals("-") && user == 1)
+            {
+                board[i][column] = "X";
+                break;
+            }
+            else if (board[i][column].equals("-") && user == 2)
+            {
+                board[i][column] = "O";
+                break;
+            }
+            
+        }
+    }
+    
+    // Function for user 1's turn 
+    public static void user1_turn()
+    {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("User 1's turn.");
+        System.out.println("Pick a column to place your chip (1-7 from left to right respectively).");
+        int s1 = scanner.nextInt();
+        int user = s1 - 1;
+        place_chip(user,1);
+    }
+    
+    // Function for user 2's turn
+    public static void user2_turn()
+    {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("User 2's turn.");
+        System.out.println("Pick a column to place your chip (1-7 from left to right respectively).");
+        int s2 = scanner.nextInt();
+        int user = s2 - 1;
+        place_chip(user,2);
+    }
+    
+    // Function for checking if there is a winner
+    public static boolean check_win()
+    {
+        int check1 = 0;
+        int check2 = 0;
+        for(int i = 0; i <6; i++)
+        {
+            for (int j = 0; j < 4; j++)
+            {
+                for (int k = 0; k < 4; k++)
+                {
+                    if (board[i][k+j].equals("X"))
+                    {
+                        check1++;
+                        if (check1 == 4)
+                        {
+                            return true;
+                        }
+                    }
+                    else
+                    {
+                        check1 = 0;
+                    }
+                    if (board[i][k+j].equals("O"))
+                    {
+                        check2++;
+                        if (check2 == 4)
+                        {
+                            return true;
+                        }
+                    }
+                    else
+                    {
+                        check2 = 0;
+                    }
+                }
+                check1 = 0;
+                check2 = 0;
+            }
+        }
+        check1 = 0;
+        check2 = 0;
+        for(int a = 0; a < 7; a++)
+        {
+            for (int b = 0; b < 3; b++)
+            {
+                for (int c = 0; c < 4; c++)
+                {
+                    if (board[c+b][a].equals("X"))
+                    {
+                        check1++;
+                        if (check1 == 4)
+                        {
+                            return true;
+                        }
+                    }
+                    else
+                    {
+                        check1 = 0;
+                    }
+                    if (board[c+b][a].equals("O"))
+                    {
+                        check2++;
+                        if (check2 == 4)
+                        {
+                            return true;
+                        }
+                    }
+                    else
+                    {
+                        check2 = 0;
+                    }
+                }
+                check1 = 0;
+                check2 = 0;
+            }
+        }
+        check1 = 0;
+        check2 = 0;
+        for (int d = 0; d < 4; d++)
+        {
+            for (int e = 5; e > 2; e--)
+            {
+                for (int f = 0; f < 4; f++)
+                {
+                    if (board[e-f][d+f].equals("X"))
+                    {
+                        check1++;
+                        if (check1 == 4)
+                        {
+                            return true;
+                        }
+                    }
+                    else
+                    {
+                        check1 = 0;
+                    }
+                    if (board[e-f][d+f].equals("O"))
+                    {
+                        check2++;
+                        if (check2 == 4)
+                        {
+                            return true;
+                        }
+                    }
+                    else
+                    {
+                        check2 = 0;
+                    }
+                }
+                check1 = 0;
+                check2 = 0;
+            }
+        }
+        check1 = 0;
+        check2 = 0;
+        for (int g = 6; g > 2; g--)
+        {
+            for (int h = 5; h > 2; h--)
+            {
+                for (int l = 0; l < 4; l++)
+                {
+                    if (board[h-l][g-l].equals("X"))
+                    {
+                        check1++;
+                        if (check1 == 4)
+                        {
+                            return true;
+                        }
+                    }
+                    else
+                    {
+                        check1 = 0;
+                    }
+                    if (board[h-l][g-l].equals("O"))
+                    {
+                        check2++;
+                        if (check2 == 4)
+                        {
+                            return true;
+                        }
+                    }
+                    else
+                    {
+                        check2 = 0;
+                    }
+                }
+                check1 = 0;
+                check2 = 0;
+            }
+        }
+        
+        return false;
+    }
+}
