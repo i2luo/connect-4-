@@ -1,0 +1,352 @@
+import java.util.*;
+public class MyProgram
+{
+    // Creating the game board
+    public static int[][] board = new int[4][4];
+    
+    public static void main(String[] args)
+    {
+        Scanner input = new Scanner(System.in);
+        
+        // Starting with two randomly positioned numbers
+        addNum();
+        addNum();
+        
+        System.out.println("Enter 'w', 'a', 's', and 'd' to move numbers up, left, down, and right respectively");
+        
+        // User continues playing until user loses
+        while(true)
+        {
+            // Setting a temporary board
+            int[][] temp = board;
+            
+            // Printing the board
+            printBoard();
+            
+            // Taking user input and moving the numbers accordingly
+            String user = input.nextLine();
+            if(move(user))
+            {
+                addNum();
+            }
+            
+            // checking if user has lost
+            if(checkLose())
+            {
+                System.out.println("You've lost");
+                break;
+            }
+        }
+    }
+    
+    // Funtion for determining which way to move numbers
+    public static boolean move(String direction)
+    {
+        if(direction.equals("s"))
+        {
+            return moveDown();
+        }
+        if(direction.equals("w"))
+        {
+            return moveUp();
+        }
+        if(direction.equals("a"))
+        {
+            return moveLeft();
+        }
+        if(direction.equals("d"))
+        {
+            return moveRight();
+        }
+        return false;
+    }
+    
+    // Function for moving down
+    public static boolean moveDown()
+    {
+        boolean result = false;
+        for (int j = 3; j >= 0; j--)
+        {
+            for (int i = 3; i >= 0 ; i--)
+            {
+                if(board[i][j] == 0)
+                {
+                    for (int k = i-1; k >= 0; k--)
+                    {
+                        if(board[k][j] != 0)
+                        {
+                            board[i][j] = board[k][j];
+                            board[k][j] = 0;
+                            result = true;
+                            break;
+                        }
+                    }
+                }
+                
+            }
+        }
+        for (int j = 3; j >= 0; j--)
+        {
+            for (int i = 3; i >= 0 ; i--)
+            {
+                if(i!=3 && board[i][j] == board[i+1][j])
+                {
+                    board[i+1][j] *= 2;
+                    board[i][j] = 0;
+                    for(int l = i; l >= 0; l--)
+                    {
+                        if(board[l][j]==0)
+                        {
+                            for(int m = l-1; m >= 0; m--)
+                            {
+                                if(board[m][j] != 0)
+                                {
+                                    board[l][j] = board[m][j];
+                                    board[m][j] = 0;
+                                    result = true;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return result;
+    }
+    
+    // Function for moving up
+    public static boolean moveUp()
+    {
+        boolean result = false;
+        for (int j = 0; j < 4; j++)
+        {
+            for (int i = 0; i < 4; i++)
+            {
+                if(board[i][j] == 0)
+                {
+                    for (int k = i+1; k < 4; k++)
+                    {
+                        if(board[k][j] != 0)
+                        {
+                            board[i][j] = board[k][j];
+                            board[k][j] = 0;
+                            result = true;
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+        for (int j = 0; j < 4; j++)
+        {
+            for (int i = 0; i < 4; i++)
+            {
+                if(i!=0 && board[i][j] == board[i-1][j])
+                {
+                    board[i-1][j] *= 2;
+                    board[i][j] = 0;
+                    for(int l = i; l < 4; l++)
+                    {
+                        if(board[l][j]==0)
+                        {
+                            for(int m = l+1; m < 4; m++)
+                            {
+                                if(board[m][j] != 0)
+                                {
+                                    board[l][j] = board[m][j];
+                                    board[m][j] = 0;
+                                    result = true;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return result;
+    }
+    
+    // Function for moving left
+    public static boolean moveLeft()
+    {
+        boolean result = false;
+        for (int j = 0; j < 4; j++)
+        {
+            for (int i = 0; i < 4; i++)
+            {
+                if(board[j][i] == 0)
+                {
+                    for (int k = i+1; k < 4; k++)
+                    {
+                        if(board[j][k] != 0)
+                        {
+                            board[j][i] = board[j][k];
+                            board[j][k] = 0;
+                            result = true;
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+        for (int j = 0; j < 4; j++)
+        {
+            for (int i = 0; i < 4; i++)
+            {
+                if(i!=0 && board[j][i] == board[j][i-1])
+                {
+                    board[j][i-1] *= 2;
+                    board[j][i] = 0;
+                    for(int l = i; l < 4; l++)
+                    {
+                        if(board[j][l]==0)
+                        {
+                            for(int m = l+1; m < 4; m++)
+                            {
+                                if(board[j][m] != 0)
+                                {
+                                    board[j][l] = board[j][m];
+                                    board[j][m] = 0;
+                                    result = true;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return result;
+    }
+    
+    // Function for moving right
+    public static boolean moveRight()
+    {
+        boolean result = false;
+        for (int j = 0; j < 4; j++)
+        {
+            for (int i = 3; i >= 0; i--)
+            {
+                if(board[j][i] == 0)
+                {
+                    for (int k = i-1; k >=0; k--)
+                    {
+                        if(board[j][k] != 0)
+                        {
+                            board[j][i] = board[j][k];
+                            board[j][k] = 0;
+                            result = true;
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+        for (int j = 0; j < 4; j++)
+        {
+            for (int i = 3; i >= 0; i--)
+            {
+                if(i!=3 && board[j][i] == board[j][i+1])
+                {
+                    board[j][i+1] *= 2;
+                    board[j][i] = 0;
+                    for(int l = i; l >= 0; l--)
+                    {
+                        if(board[j][l]==0)
+                        {
+                            for(int m = l-1; m >= 0; m--)
+                            {
+                                if(board[j][m] != 0)
+                                {
+                                    board[j][l] = board[j][m];
+                                    board[j][m] = 0;
+                                    result = true;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return result;
+    }
+    
+    // Function for checking if user has lost
+    public static boolean checkLose()
+    {
+        boolean lose = true;
+        for (int i = 0; i < 4; i++)
+        {
+            for (int j = 0; j < 4; j++)
+            {
+                if(board[i][j] == 0)
+                {
+                    lose = false;
+                }
+            }
+        }
+        return lose;
+    }
+    
+    // Function for adding a randomly positioned number
+    public static void addNum()
+    {
+        int rand = (int)(Math.random()*10)+1;
+        int num = 0;
+        if (rand == 1)
+        {
+            num = 4;
+        }
+        else
+        {
+            num = 2;
+        }
+        
+        while(true)
+        {
+            int x = (int)(Math.random()*4);
+            int y = (int)(Math.random()*4);
+            
+            if(board[x][y] == 0)
+            {
+                board[x][y] = num;
+                break;
+            }
+        }
+        
+        
+    }
+    
+    // Function for printing board
+    public static void printBoard()
+    {
+        for (int i = 0; i < 4; i++)
+        {
+            for (int j = 0; j < 4; j++)
+            {
+                int num = board[i][j];
+                if(num<10)
+                {
+                    System.out.print("  "+num+"  ");
+                }
+                else if(num<100)
+                {
+                    System.out.print(" "+num+"  ");
+                }
+                else if(num<1000)
+                {
+                    System.out.print(" "+num+" ");
+                }
+                else
+                {
+                    System.out.print(num+" ");
+                }
+            }
+            System.out.println("");
+            System.out.println("");
+        }
+    }
+}
